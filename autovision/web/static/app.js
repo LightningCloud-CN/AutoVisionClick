@@ -913,6 +913,13 @@ async function init() {
     if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); $('#btn-run').click(); }
   });
 
+  // Auto-shutdown when browser closes
+  window.addEventListener('beforeunload', () => {
+    if (S.socket?.connected) {
+      S.socket.emit('shutdown');
+    }
+  });
+
   console.log('AutoVision UI initialized');
 }
 

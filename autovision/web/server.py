@@ -1,4 +1,5 @@
 """Flask + SocketIO web server for AutoVision."""
+import os
 import time
 import threading
 import webbrowser
@@ -7,7 +8,9 @@ from flask_socketio import SocketIO
 from autovision import config
 
 
+_connected_clients = set()
 _subscribed_clients = set()
+_shutdown_timer = None
 
 
 def create_app(app_controller):
@@ -32,8 +35,7 @@ def create_app(app_controller):
 
 
 def _find_static_dir():
-    import os, sys
-    # PyInstaller bundles files to sys._MEIPASS
+    import sys
     if getattr(sys, 'frozen', False):
         base = sys._MEIPASS
     else:
@@ -41,15 +43,45 @@ def _find_static_dir():
     return os.path.join(base, 'static')
 
 
+def _schedule_shutdown(socketio, app_controller, delay=5):
+    global _shutdown_timer
+    if _shutdown_timer:
+        _shutdown_timer.cancel()
+
+    def do_shutdown():
+        global _shutdown_timer
+        _shutdown_timer = None
+        if not _connected_clients:
+            print("Browser closed — shutting down AutoVision...")
+            app_controller.shutdown()
+            os._exit(0)
+
+    _shutdown_timer = threading.Timer(delay, do_shutdown)
+    _shutdown_timer.daemon = True
+    _shutdown_timer.start()
+
+
+def _cancel_shutdown():
+    global _shutdown_timer
+    if _shutdown_timer:
+        _shutdown_timer.cancel()
+        _shutdown_timer = None
+
+
 def _register_socket_events(socketio, app_controller):
     @socketio.on('connect')
     def on_connect():
-        pass
+        from flask import request
+        _connected_clients.add(request.sid)
+        _cancel_shutdown()
 
     @socketio.on('disconnect')
     def on_disconnect():
         from flask import request
+        _connected_clients.discard(request.sid)
         _subscribed_clients.discard(request.sid)
+        if not _connected_clients:
+            _schedule_shutdown(socketio, app_controller, delay=5)
 
     @socketio.on('subscribe_dashboard')
     def on_subscribe():
@@ -60,6 +92,13 @@ def _register_socket_events(socketio, app_controller):
     def on_unsubscribe():
         from flask import request
         _subscribed_clients.discard(request.sid)
+
+    @socketio.on('shutdown')
+    def on_shutdown():
+        from flask import request
+        _connected_clients.discard(request.sid)
+        app_controller.shutdown()
+        os._exit(0)
 
 
 def _dashboard_push_thread(socketio, app_controller):
@@ -112,6 +151,9 @@ def start_server(socketio, flask_app, app_controller):
             time.sleep(1.0)
             webbrowser.open(f'http://{config.SERVER_HOST}:{config.SERVER_PORT}')
         threading.Thread(target=open_browser, daemon=True).start()
+
+    print(f"AutoVision running at http://{config.SERVER_HOST}:{config.SERVER_PORT}")
+    print("Close the browser tab to exit, or press Ctrl+C")
 
     try:
         socketio.run(flask_app,
