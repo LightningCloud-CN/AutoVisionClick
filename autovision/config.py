@@ -28,6 +28,11 @@ SCRIPT_DIR = "scripts"
 LOG_DIR = "logs"
 PROJECT_FILENAME = "project.json"
 
+# Server
+SERVER_HOST = "127.0.0.1"
+SERVER_PORT = 5000
+AUTO_OPEN_BROWSER = True
+
 # Validation
 MIN_CONFIDENCE_WARN = 0.7
 MIN_WAIT_WARN_MS = 100

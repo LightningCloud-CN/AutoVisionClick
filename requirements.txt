@@ -4,3 +4,5 @@ mss>=9.0.0
 pydirectinput>=1.0.4
 pynput>=1.7.6
 Pillow>=10.0.0
+flask>=3.0.0
+flask-socketio>=5.3.0
