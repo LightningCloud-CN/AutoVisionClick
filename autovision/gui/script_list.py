@@ -18,10 +18,10 @@ class ScriptListPanel(ctk.CTkScrollableFrame):
     def _build_ui(self):
         header = ctk.CTkFrame(self, fg_color="transparent")
         header.pack(fill="x", padx=6, pady=(6, 4))
-        styled_label(header, "SCRIPTS", size=10, color=TEXT_SECONDARY).pack(side="left")
+        styled_label(header, "脚本列表", size=10, color=TEXT_SECONDARY).pack(side="left")
         styled_button(
-            header, "+ New", color=ACCENT_GREEN,
-            width=50, height=22, font=(FONT_FAMILY, 10),
+            header, "+ 新建", color=ACCENT_GREEN,
+            width=55, height=22, font=(FONT_FAMILY, 10),
             command=self._on_add_click,
         ).pack(side="right")
 

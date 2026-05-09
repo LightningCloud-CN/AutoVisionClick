@@ -10,23 +10,23 @@ class WindowSelector(ctk.CTkToplevel):
     def __init__(self, parent, app_controller=None):
         super().__init__(parent)
         self._app = app_controller
-        self.title("Select Target Window")
+        self.title("选择目标窗口")
         self.geometry("400x400")
         self.configure(fg_color=BG_PANEL)
         self.result = None
         self._build()
 
     def _build(self):
-        styled_label(self, "SELECT TARGET WINDOW", size=11,
+        styled_label(self, "选择目标窗口", size=11,
                      color=TEXT_SECONDARY).pack(pady=(10, 4))
 
         tab_frame = ctk.CTkFrame(self, fg_color="transparent")
         tab_frame.pack(fill="x", padx=10, pady=4)
 
         self._method = ctk.StringVar(value="list")
-        ctk.CTkRadioButton(tab_frame, text="List", variable=self._method,
+        ctk.CTkRadioButton(tab_frame, text="列表选择", variable=self._method,
                            value="list", command=self._show_list).pack(side="left", padx=4)
-        ctk.CTkRadioButton(tab_frame, text="Manual", variable=self._method,
+        ctk.CTkRadioButton(tab_frame, text="手动输入", variable=self._method,
                            value="manual", command=self._show_manual).pack(side="left", padx=4)
 
         self._list_frame = ctk.CTkScrollableFrame(self, fg_color="transparent")
@@ -34,15 +34,15 @@ class WindowSelector(ctk.CTkToplevel):
 
         self._manual_entry = ctk.CTkEntry(
             self._manual_frame, fg_color=BG_INPUT,
-            placeholder_text="Enter window title...",
+            placeholder_text="输入窗口标题...",
             font=(FONT_FAMILY, 10), height=30,
         )
         self._manual_entry.pack(fill="x", padx=10, pady=4)
 
         self._method_var = ctk.StringVar(value="partial")
-        for text, val in [("Partial match", "partial"),
-                          ("Exact match", "exact"),
-                          ("Regex", "regex")]:
+        for text, val in [("模糊匹配", "partial"),
+                          ("精确匹配", "exact"),
+                          ("正则表达式", "regex")]:
             ctk.CTkRadioButton(
                 self._manual_frame, text=text, variable=self._method_var, value=val,
             ).pack(anchor="w", padx=20, pady=1)
@@ -52,9 +52,9 @@ class WindowSelector(ctk.CTkToplevel):
 
         btn_frame = ctk.CTkFrame(self, fg_color="transparent")
         btn_frame.pack(fill="x", padx=10, pady=(8, 10))
-        styled_button(btn_frame, "Select", color=ACCENT_GREEN,
+        styled_button(btn_frame, "确认", color=ACCENT_GREEN,
                       command=self._on_select).pack(side="right", padx=4)
-        styled_button(btn_frame, "Cancel", color="#30363d",
+        styled_button(btn_frame, "取消", color="#30363d",
                       command=self.destroy).pack(side="right", padx=4)
 
     def _show_list(self):

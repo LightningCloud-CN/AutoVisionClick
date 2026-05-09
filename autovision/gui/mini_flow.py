@@ -16,11 +16,11 @@ class MiniFlowPreview(ctk.CTkFrame):
         for w in self.winfo_children():
             w.destroy()
         if node is None:
-            styled_label(self, "No module selected", size=9,
+            styled_label(self, "未选择模块", size=9,
                          color=TEXT_SECONDARY).pack(pady=20)
             return
 
-        styled_label(self, "FLOW PREVIEW", size=9, color=TEXT_SECONDARY).pack(
+        styled_label(self, "流程预览", size=9, color=TEXT_SECONDARY).pack(
             anchor="w", padx=6, pady=(6, 4))
         self._render_flow_node(node)
 

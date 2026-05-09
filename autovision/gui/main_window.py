@@ -10,7 +10,7 @@ class MainWindow(ctk.CTk):
         apply_theme()
         self._app = app_controller
 
-        self.title(f"{APP_NAME}")
+        self.title(APP_NAME)
         self.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}")
         self.configure(fg_color=BG_DARK)
         self.minsize(900, 600)
@@ -53,19 +53,19 @@ class MainWindow(ctk.CTk):
         from autovision.gui.styles import ACCENT_GREEN, ACCENT_RED, ACCENT_BLUE, ACCENT_YELLOW
 
         styled_button(
-            self.toolbar, "Run", color=ACCENT_GREEN,
+            self.toolbar, "▶ 运行", color=ACCENT_GREEN,
             width=60, height=26, font=(FONT_FAMILY, 10),
             command=self._menu("start_all"),
         ).pack(side="left", padx=2)
 
         styled_button(
-            self.toolbar, "Stop", color=ACCENT_RED,
+            self.toolbar, "⏹ 停止", color=ACCENT_RED,
             width=60, height=26, font=(FONT_FAMILY, 10),
             command=self._menu("stop_all"),
         ).pack(side="left", padx=2)
 
         styled_button(
-            self.toolbar, "Pause", color=ACCENT_YELLOW,
+            self.toolbar, "⏸ 暂停", color=ACCENT_YELLOW,
             width=60, height=26, font=(FONT_FAMILY, 10),
             command=self._menu("toggle_pause"),
         ).pack(side="left", padx=2)
@@ -74,19 +74,19 @@ class MainWindow(ctk.CTk):
             side="left", padx=6)
 
         styled_button(
-            self.toolbar, "Capture", color="#30363d",
+            self.toolbar, "📸 截图", color="#30363d",
             width=70, height=26, font=(FONT_FAMILY, 10),
             command=self._menu("capture_template"),
         ).pack(side="left", padx=2)
 
         styled_button(
-            self.toolbar, "Pick", color="#30363d",
-            width=60, height=26, font=(FONT_FAMILY, 10),
+            self.toolbar, "📍 取坐标", color="#30363d",
+            width=70, height=26, font=(FONT_FAMILY, 10),
             command=self._menu("pick_coordinate"),
         ).pack(side="left", padx=2)
 
         styled_button(
-            self.toolbar, "Wizard", color=ACCENT_BLUE,
+            self.toolbar, "🧙 向导", color=ACCENT_BLUE,
             width=70, height=26, font=(FONT_FAMILY, 10),
             command=self._menu("wizard"),
         ).pack(side="left", padx=2)
@@ -96,25 +96,25 @@ class MainWindow(ctk.CTk):
         menubar = Menu(self, bg="#161b22", fg="#e6edf3", activebackground="#1f2937",
                        activeforeground="#00ccff")
         file_menu = Menu(menubar, tearoff=0, bg="#161b22", fg="#e6edf3")
-        file_menu.add_command(label="New Project", command=self._menu("new_project"))
-        file_menu.add_command(label="Open Project", command=self._menu("open_project"))
-        file_menu.add_command(label="Save Project", command=self._menu("save_project"))
+        file_menu.add_command(label="新建项目", command=self._menu("new_project"))
+        file_menu.add_command(label="打开项目", command=self._menu("open_project"))
+        file_menu.add_command(label="保存项目", command=self._menu("save_project"))
         file_menu.add_separator()
-        file_menu.add_command(label="Exit", command=self._on_close)
-        menubar.add_cascade(label="File", menu=file_menu)
+        file_menu.add_command(label="退出", command=self._on_close)
+        menubar.add_cascade(label="文件", menu=file_menu)
 
         run_menu = Menu(menubar, tearoff=0, bg="#161b22", fg="#e6edf3")
-        run_menu.add_command(label="Start All", command=self._menu("start_all"))
-        run_menu.add_command(label="Stop All", command=self._menu("stop_all"))
-        run_menu.add_command(label="Pause/Resume", command=self._menu("toggle_pause"))
-        menubar.add_cascade(label="Run", menu=run_menu)
+        run_menu.add_command(label="全部启动", command=self._menu("start_all"))
+        run_menu.add_command(label="全部停止", command=self._menu("stop_all"))
+        run_menu.add_command(label="暂停/恢复", command=self._menu("toggle_pause"))
+        menubar.add_cascade(label="运行", menu=run_menu)
 
         tools_menu = Menu(menubar, tearoff=0, bg="#161b22", fg="#e6edf3")
-        tools_menu.add_command(label="Capture Template", command=self._menu("capture_template"))
-        tools_menu.add_command(label="Template Library", command=self._menu("template_library"))
-        tools_menu.add_command(label="Pick Coordinate", command=self._menu("pick_coordinate"))
-        tools_menu.add_command(label="Quick Start Wizard", command=self._menu("wizard"))
-        menubar.add_cascade(label="Tools", menu=tools_menu)
+        tools_menu.add_command(label="截取模板", command=self._menu("capture_template"))
+        tools_menu.add_command(label="模板库", command=self._menu("template_library"))
+        tools_menu.add_command(label="坐标拾取", command=self._menu("pick_coordinate"))
+        tools_menu.add_command(label="快速向导", command=self._menu("wizard"))
+        menubar.add_cascade(label="工具", menu=tools_menu)
 
         self.config(menu=menubar)
 

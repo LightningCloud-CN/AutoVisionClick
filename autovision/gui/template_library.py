@@ -11,7 +11,7 @@ class TemplateLibrary(ctk.CTkToplevel):
     def __init__(self, parent, app_controller=None):
         super().__init__(parent)
         self._app = app_controller
-        self.title("Template Library")
+        self.title("模板库")
         self.geometry("500x500")
         self.configure(fg_color=BG_PANEL)
         self._on_select = None
@@ -20,9 +20,9 @@ class TemplateLibrary(ctk.CTkToplevel):
     def _build(self):
         header = ctk.CTkFrame(self, fg_color="transparent")
         header.pack(fill="x", padx=10, pady=(10, 6))
-        styled_label(header, "TEMPLATE LIBRARY", size=11, color=TEXT_SECONDARY).pack(side="left")
+        styled_label(header, "模板库", size=11, color=TEXT_SECONDARY).pack(side="left")
         styled_button(
-            header, "+ Import", color=ACCENT_GREEN,
+            header, "+ 导入", color=ACCENT_GREEN,
             width=70, height=24, font=(FONT_FAMILY, 10),
             command=self._import_file,
         ).pack(side="right")
@@ -41,11 +41,11 @@ class TemplateLibrary(ctk.CTkToplevel):
             w.destroy()
         if self._app and self._app.project and self._app.project_dir:
             templates = self._app.project.list_templates(self._app.project_dir)
-            self._info.configure(text=f"{len(templates)} templates in project")
+            self._info.configure(text=f"项目中共有 {len(templates)} 个模板")
             for name in templates:
                 self._add_card(name)
         else:
-            self._info.configure(text="No project open")
+            self._info.configure(text="未打开项目")
 
     def _add_card(self, name: str):
         card = ctk.CTkFrame(self._grid, fg_color=BG_CARD, corner_radius=6)
@@ -57,13 +57,13 @@ class TemplateLibrary(ctk.CTkToplevel):
         info_frame = ctk.CTkFrame(card, fg_color="transparent")
         info_frame.pack(side="right", padx=4)
         styled_button(
-            info_frame, "Del", color=ACCENT_RED,
-            width=35, height=22, font=(FONT_FAMILY, 9),
+            info_frame, "删除", color=ACCENT_RED,
+            width=40, height=22, font=(FONT_FAMILY, 9),
             command=lambda n=name: self._delete(n),
         ).pack(side="right", padx=2)
         styled_button(
-            info_frame, "Use", color=ACCENT_GREEN,
-            width=35, height=22, font=(FONT_FAMILY, 9),
+            info_frame, "使用", color=ACCENT_GREEN,
+            width=40, height=22, font=(FONT_FAMILY, 9),
             command=lambda n=name: self._select(n),
         ).pack(side="right", padx=2)
 
@@ -82,8 +82,8 @@ class TemplateLibrary(ctk.CTkToplevel):
     def _import_file(self):
         from tkinter import filedialog
         files = filedialog.askopenfilenames(
-            title="Import Template Images",
-            filetypes=[("Images", "*.png *.jpg *.jpeg *.bmp"), ("All", "*.*")],
+            title="导入模板图片",
+            filetypes=[("图片", "*.png *.jpg *.jpeg *.bmp"), ("全部", "*.*")],
         )
         if files and self._app and self._app.project_dir:
             img_dir = os.path.join(self._app.project_dir, "images")

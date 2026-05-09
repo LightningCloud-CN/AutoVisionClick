@@ -21,7 +21,7 @@ class ScriptEditor(ctk.CTkFrame):
     def _build(self):
         header = ctk.CTkFrame(self, fg_color="transparent")
         header.pack(fill="x", padx=6, pady=(6, 2))
-        styled_label(header, "SCRIPT EDITOR", size=10, color=TEXT_SECONDARY).pack(side="left")
+        styled_label(header, "脚本编辑器", size=10, color=TEXT_SECONDARY).pack(side="left")
 
         self._script_name_label = styled_label(header, "", size=11, color=TEXT_PRIMARY)
         self._script_name_label.pack(side="left", padx=16)

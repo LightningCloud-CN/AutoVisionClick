@@ -26,7 +26,7 @@ CATEGORY_COLORS = {
     "group": TEXT_SECONDARY,
 }
 
-FONT_FAMILY = "Segoe UI"
+FONT_FAMILY = "Microsoft YaHei"
 FONT_MONO = "Cascadia Code"
 
 

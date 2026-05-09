@@ -8,7 +8,7 @@ from autovision.model.module_types import ModuleCategory, MODULE_REGISTRY, Modul
 
 class ModulePalette(ctk.CTkScrollableFrame):
     def __init__(self, parent, **kwargs):
-        super().__init__(parent, fg_color="transparent", label_text="MODULE PALETTE",
+        super().__init__(parent, fg_color="transparent", label_text="模块面板",
                          label_fg_color=TEXT_SECONDARY, **kwargs)
         self._on_add_module = None
         self._build()
@@ -26,7 +26,7 @@ class ModulePalette(ctk.CTkScrollableFrame):
         color = CATEGORY_COLORS.get(category.value, TEXT_SECONDARY)
         label = ctk.CTkLabel(
             self,
-            text=f"{category.value.upper()}",
+            text=category.display_name,
             text_color=color,
             font=(FONT_FAMILY, 9, "bold"),
         )

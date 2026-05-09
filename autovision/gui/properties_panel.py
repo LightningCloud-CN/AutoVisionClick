@@ -10,7 +10,7 @@ from autovision.model.module_types import ModuleDef
 
 class PropertiesPanel(ctk.CTkScrollableFrame):
     def __init__(self, parent, app_controller=None, **kwargs):
-        super().__init__(parent, fg_color="transparent", label_text="PROPERTIES",
+        super().__init__(parent, fg_color="transparent", label_text="属性面板",
                          label_fg_color=TEXT_SECONDARY, **kwargs)
         self._app = app_controller
         self._node: ScriptNode | None = None
@@ -22,7 +22,7 @@ class PropertiesPanel(ctk.CTkScrollableFrame):
     def _build_placeholder(self):
         self._content = ctk.CTkFrame(self, fg_color="transparent")
         self._content.pack(fill="both", expand=True, padx=6, pady=6)
-        styled_label(self._content, "Select a module\nto edit properties",
+        styled_label(self._content, "选择一个模块\n编辑其属性",
                      size=10, color=TEXT_MUTED).pack(pady=20)
 
     def set_on_pick_coord(self, callback):
@@ -38,13 +38,13 @@ class PropertiesPanel(ctk.CTkScrollableFrame):
         self._node = node
 
         if node is None:
-            styled_label(self._content, "Select a module\nto edit properties",
+            styled_label(self._content, "选择一个模块\n编辑其属性",
                          size=10, color=TEXT_MUTED).pack(pady=20)
             return
 
         mod = ModuleDef.get(node.subtype)
         if mod is None:
-            styled_label(self._content, f"Unknown: {node.subtype}",
+            styled_label(self._content, f"未知类型: {node.subtype}",
                          size=10, color=TEXT_MUTED).pack(pady=20)
             return
 
@@ -71,7 +71,7 @@ class PropertiesPanel(ctk.CTkScrollableFrame):
 
         if node.subtype == "click_coord":
             styled_button(
-                self._content, "Pick Coordinates", color=ACCENT_GREEN,
+                self._content, "📍 拾取坐标", color=ACCENT_GREEN,
                 height=28, font=(FONT_FAMILY, 10),
                 command=self._on_pick,
             ).pack(fill="x", pady=(8, 0))

@@ -110,9 +110,9 @@ class AppController:
 
     def _handle_new_project(self):
         from tkinter import filedialog, simpledialog
-        name = simpledialog.askstring("New Project", "Project name:", parent=self._window)
+        name = simpledialog.askstring("新建项目", "请输入项目名称:", parent=self._window)
         if name:
-            directory = filedialog.askdirectory(title="Select project folder", parent=self._window)
+            directory = filedialog.askdirectory(title="选择项目保存位置", parent=self._window)
             if directory:
                 proj_dir = os.path.join(directory, name)
                 self.new_project(name, proj_dir)
@@ -120,13 +120,13 @@ class AppController:
 
     def _handle_open_project(self):
         from tkinter import filedialog
-        directory = filedialog.askdirectory(title="Open project folder", parent=self._window)
+        directory = filedialog.askdirectory(title="打开项目文件夹", parent=self._window)
         if directory:
             try:
                 self.load_project(directory)
             except FileNotFoundError:
                 from tkinter import messagebox
-                messagebox.showerror("Error", f"No project.json found in {directory}")
+                messagebox.showerror("错误", f"在 {directory} 中未找到 project.json")
 
     def shutdown(self):
         self.emergency_stop()

@@ -1,6 +1,6 @@
 """AutoVision configuration and constants."""
 
-APP_NAME = "AutoVision"
+APP_NAME = "AutoVision - 自动化视觉识别工具"
 APP_VERSION = "1.0.0"
 
 # Match engine defaults

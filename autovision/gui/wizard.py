@@ -11,8 +11,8 @@ class Wizard(ctk.CTkToplevel):
     def __init__(self, parent, app_controller=None):
         super().__init__(parent)
         self._app = app_controller
-        self.title("Quick Start Wizard")
-        self.geometry("450x350")
+        self.title("快速向导")
+        self.geometry("450x380")
         self.configure(fg_color=BG_PANEL)
         self._step = 0
         self._template_var = ctk.StringVar(value="")
@@ -30,10 +30,10 @@ class Wizard(ctk.CTkToplevel):
             w.destroy()
 
         if self._step == 0:
-            styled_label(self._content, "Step 1: Which image should trigger this script?",
-                         size=13, color=TEXT_PRIMARY).pack(pady=(0, 8))
+            styled_label(self._content, "第一步：选择触发图像",
+                         size=14, color=TEXT_PRIMARY).pack(pady=(0, 8))
             styled_label(self._content,
-                         "Select a template image from your project.",
+                         "选择一个项目中的模板图像作为触发条件。",
                          size=10, color=TEXT_SECONDARY).pack(pady=(0, 12))
 
             if self._app and self._app.project and self._app.project_dir:
@@ -47,21 +47,21 @@ class Wizard(ctk.CTkToplevel):
                         ).pack(anchor="w", padx=10, pady=2)
                 else:
                     styled_label(self._content,
-                                 "No templates found. Add one from the Template Library.",
+                                 "暂无模板，请先在模板库中添加。",
                                  size=10, color=TEXT_SECONDARY).pack()
             else:
-                styled_label(self._content, "Open or create a project first.",
+                styled_label(self._content, "请先创建或打开一个项目。",
                              size=10, color=TEXT_SECONDARY).pack()
 
         elif self._step == 1:
-            styled_label(self._content, "Step 2: What should happen?",
-                         size=13, color=TEXT_PRIMARY).pack(pady=(0, 8))
+            styled_label(self._content, "第二步：选择执行动作",
+                         size=14, color=TEXT_PRIMARY).pack(pady=(0, 8))
 
             self._action_var = ctk.StringVar(value="click")
             for val, label in [
-                ("click", "🖱  Click the image center"),
-                ("key", "⌨  Press a keyboard key"),
-                ("click_coord", "🎯  Click a fixed coordinate"),
+                ("click", "🖱  点击图像中心"),
+                ("key", "⌨  按下键盘按键"),
+                ("click_coord", "🎯  点击固定坐标"),
             ]:
                 ctk.CTkRadioButton(
                     self._content, text=label,
@@ -69,26 +69,26 @@ class Wizard(ctk.CTkToplevel):
                 ).pack(anchor="w", padx=10, pady=4)
 
             self._key_entry = ctk.CTkEntry(
-                self._content, placeholder_text="Key name (e.g., f1, enter)...",
+                self._content, placeholder_text="按键名称 (例如: f1, enter)...",
                 font=(FONT_FAMILY, 10), height=28,
             )
             self._key_entry.pack(fill="x", padx=10, pady=(8, 0))
 
         elif self._step == 2:
-            styled_label(self._content, "Step 3: How often should it check?",
-                         size=13, color=TEXT_PRIMARY).pack(pady=(0, 8))
+            styled_label(self._content, "第三步：设置运行方式",
+                         size=14, color=TEXT_PRIMARY).pack(pady=(0, 8))
 
             self._loop_var = ctk.StringVar(value="always")
             ctk.CTkRadioButton(self._content,
-                               text="Keep checking (loop while visible)",
+                               text="持续检测（图像可见时循环执行）",
                                variable=self._loop_var,
                                value="always").pack(anchor="w", padx=10, pady=4)
             ctk.CTkRadioButton(self._content,
-                               text="Just once (fire and stop)",
+                               text="仅执行一次",
                                variable=self._loop_var,
                                value="once").pack(anchor="w", padx=10, pady=4)
 
-            styled_label(self._content, "Check interval (ms):",
+            styled_label(self._content, "检测间隔 (毫秒):",
                          size=10, color=TEXT_SECONDARY).pack(
                 anchor="w", padx=10, pady=(12, 2))
             self._interval_entry = ctk.CTkEntry(
@@ -101,13 +101,13 @@ class Wizard(ctk.CTkToplevel):
         nav.pack(side="bottom", fill="x", pady=(16, 0))
 
         if self._step > 0:
-            styled_button(nav, "Back", color="#30363d",
+            styled_button(nav, "上一步", color="#30363d",
                           command=self._prev).pack(side="left")
         if self._step < 2:
-            styled_button(nav, "Next", color=ACCENT_BLUE,
+            styled_button(nav, "下一步", color=ACCENT_BLUE,
                           command=self._next).pack(side="right")
         else:
-            styled_button(nav, "Generate Script", color=ACCENT_GREEN,
+            styled_button(nav, "生成脚本", color=ACCENT_GREEN,
                           command=self._finish).pack(side="right")
 
     def _next(self):
@@ -123,7 +123,7 @@ class Wizard(ctk.CTkToplevel):
             self.destroy()
             return
 
-        name = f"Wizard Script {len(self._app.project.scripts) + 1}"
+        name = f"向导脚本 {len(self._app.project.scripts) + 1}"
         root = ScriptNode(
             type="trigger", subtype="image_found",
             config={"template": self._template_var.get(), "confidence": 0.85})

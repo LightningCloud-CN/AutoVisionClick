@@ -23,9 +23,9 @@ class EventLog(ctk.CTkFrame):
         header = ctk.CTkFrame(self, fg_color="transparent")
         header.pack(fill="x", padx=6, pady=(6, 2))
 
-        styled_label(header, "EVENT LOG", size=10, color=TEXT_SECONDARY).pack(side="left")
+        styled_label(header, "事件日志", size=10, color=TEXT_SECONDARY).pack(side="left")
         styled_button(
-            header, "Clear", color="#30363d",
+            header, "清空", color="#30363d",
             width=50, height=20, font=(FONT_FAMILY, 9),
             command=self.clear,
         ).pack(side="right")

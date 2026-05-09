@@ -7,6 +7,14 @@ from autovision.gui.styles import (
 )
 from autovision.engine.script_runner import ScriptState
 
+STATE_LABELS = {
+    ScriptState.RUNNING: "运行中",
+    ScriptState.PAUSED: "已暂停",
+    ScriptState.STOPPED: "已停止",
+    ScriptState.ERROR: "错误",
+    ScriptState.IDLE: "空闲",
+}
+
 STATE_COLORS = {
     ScriptState.RUNNING: ACCENT_GREEN,
     ScriptState.PAUSED: ACCENT_YELLOW,
@@ -20,21 +28,21 @@ class Dashboard(ctk.CTkToplevel):
     def __init__(self, parent, app_controller=None):
         super().__init__(parent)
         self._app = app_controller
-        self.title("Live Dashboard")
+        self.title("运行面板")
         self.geometry("500x400")
         self.configure(fg_color=BG_PANEL)
         self._cards_frame = None
         self._build()
 
     def _build(self):
-        styled_label(self, "LIVE DASHBOARD", size=11, color=TEXT_SECONDARY).pack(pady=(10, 4))
+        styled_label(self, "运行面板", size=11, color=TEXT_SECONDARY).pack(pady=(10, 4))
 
         self._cards_frame = ctk.CTkScrollableFrame(self, fg_color="transparent")
         self._cards_frame.pack(fill="both", expand=True, padx=10, pady=4)
 
         self._perf_frame = ctk.CTkFrame(self, fg_color=BG_CARD, height=60)
         self._perf_frame.pack(fill="x", padx=10, pady=(4, 10))
-        self._perf_label = styled_label(self._perf_frame, "No scripts running",
+        self._perf_label = styled_label(self._perf_frame, "没有脚本在运行",
                                         size=10, color=TEXT_MUTED)
         self._perf_label.pack(padx=10, pady=10)
 
@@ -44,17 +52,18 @@ class Dashboard(ctk.CTkToplevel):
 
         rt = self._app.get_runtime() if self._app else None
         if rt is None:
-            self._perf_label.configure(text="No scripts running")
+            self._perf_label.configure(text="没有脚本在运行")
             return
 
         runners = rt.get_all_runners()
         running = sum(1 for r in runners if r.state == ScriptState.RUNNING)
         self._perf_label.configure(
-            text=f"Scripts: {running}/{len(runners)} | Threads: {len(runners)}/8"
+            text=f"脚本: {running}/{len(runners)} | 线程: {len(runners)}/8"
         )
 
         for runner in runners:
             color = STATE_COLORS.get(runner.state, TEXT_MUTED)
+            state_text = STATE_LABELS.get(runner.state, runner.state.value)
             card = ctk.CTkFrame(self._cards_frame, fg_color=BG_CARD, corner_radius=6)
             card.pack(fill="x", padx=2, pady=2)
 
@@ -62,7 +71,7 @@ class Dashboard(ctk.CTkToplevel):
                          size=11, color=color).pack(anchor="w", padx=8, pady=(6, 1))
             styled_label(
                 card,
-                f"State: {runner.state.value} | Matches: {runner._match_count} | "
-                f"Runtime: {runner.runtime_seconds():.0f}s",
+                f"状态: {state_text} | 匹配: {runner._match_count}次 | "
+                f"运行: {runner.runtime_seconds():.0f}秒",
                 size=9, color=TEXT_SECONDARY,
             ).pack(anchor="w", padx=8, pady=(0, 6))

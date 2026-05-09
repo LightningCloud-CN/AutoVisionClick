@@ -21,9 +21,9 @@ class CoordinatePicker:
 
         self._info = tk.Label(
             self._overlay,
-            text="Press SPACE or click to capture | ESC to cancel",
+            text="按空格键或点击鼠标捕获坐标 | 按ESC取消",
             bg="#161b22", fg="#00ccff",
-            font=("Segoe UI", 10), padx=10, pady=4,
+            font=("Microsoft YaHei", 10), padx=10, pady=4,
         )
         self._info.place(relx=0.5, rely=0.02, anchor="n")
         self._overlay.focus_force()

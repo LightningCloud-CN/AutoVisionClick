@@ -65,15 +65,15 @@ class TemplateCapture:
 
     def _save_template(self, img: np.ndarray, left, top, right, bottom):
         dialog = ctk.CTkToplevel()
-        dialog.title("Save Template")
+        dialog.title("保存模板")
         dialog.geometry("350x250")
         dialog.configure(fg_color=BG_PANEL)
 
-        styled_label(dialog, "SAVE TEMPLATE", size=11, color=TEXT_SECONDARY).pack(pady=(10, 4))
-        styled_label(dialog, f"Region: {right-left}x{bottom-top}",
+        styled_label(dialog, "保存模板", size=11, color=TEXT_SECONDARY).pack(pady=(10, 4))
+        styled_label(dialog, f"区域大小: {right-left}x{bottom-top}",
                      size=9, color=TEXT_SECONDARY).pack()
 
-        entry = ctk.CTkEntry(dialog, placeholder_text="Template name...",
+        entry = ctk.CTkEntry(dialog, placeholder_text="输入模板名称...",
                              font=(FONT_FAMILY, 11), height=30)
         entry.pack(fill="x", padx=20, pady=(10, 4))
         entry.focus()
@@ -84,7 +84,7 @@ class TemplateCapture:
                 return
             if not self._app.project_dir:
                 from tkinter import messagebox
-                messagebox.showwarning("No Project", "Open or create a project first.")
+                messagebox.showwarning("提示", "请先创建或打开一个项目。")
                 dialog.destroy()
                 return
             img_dir = os.path.join(self._app.project_dir, "images")
@@ -93,5 +93,5 @@ class TemplateCapture:
             cv2.imwrite(path, img)
             dialog.destroy()
 
-        styled_button(dialog, "Save", color=ACCENT_GREEN, command=save).pack(pady=(8, 4))
+        styled_button(dialog, "保存", color=ACCENT_GREEN, command=save).pack(pady=(8, 4))
         dialog.bind("<Return>", lambda e: save())
