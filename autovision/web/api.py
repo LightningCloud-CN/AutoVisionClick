@@ -2,6 +2,8 @@
 from flask import Blueprint, request, jsonify, current_app, send_file
 from autovision.model.script import Script, ScriptNode
 from autovision.model.module_types import ModuleDef
+from autovision.gui.template_capture import TemplateCapture
+from autovision.gui.coordinate_picker import CoordinatePicker
 
 api_bp = Blueprint('api', __name__)
 
@@ -278,29 +280,39 @@ def tools_list_windows():
 @api_bp.route('/tools/capture_template', methods=['POST'])
 def tools_capture_template():
     import threading
+    import tkinter as tk
     sid = request.args.get('sid', '')
 
     def run():
-        import tkinter as tk
         result = {}
-        done = threading.Event()
-
-        def on_saved(name, width, height, filepath):
-            result['name'] = name
-            result['width'] = width
-            result['height'] = height
-            result['filepath'] = filepath
-            done.set()
-
-        root = tk.Tk()
-        root.withdraw()
+        root = None
         try:
-            _ctrl().start_template_capture(on_saved=on_saved)
+            root = tk.Tk()
+            root.withdraw()
+
+            def on_saved(name, width, height, filepath):
+                result['name'] = name
+                result['width'] = width
+                result['height'] = height
+                result['filepath'] = filepath
+                root.quit()
+
+            def on_cancelled():
+                root.quit()
+
+            tc = TemplateCapture(_ctrl(), on_saved=on_saved, on_cancelled=on_cancelled)
+            tc.start_capture(root=root)
             root.mainloop()
-        except Exception:
-            pass
-        done.wait(timeout=120)
-        if result and sid:
+        except Exception as e:
+            result['error'] = str(e)
+        finally:
+            if root:
+                try:
+                    root.destroy()
+                except Exception:
+                    pass
+
+        if result and 'name' in result and sid:
             _sio().emit('template_captured', result, room=sid)
 
     threading.Thread(target=run, daemon=True).start()
@@ -310,28 +322,38 @@ def tools_capture_template():
 @api_bp.route('/tools/pick_coordinate', methods=['POST'])
 def tools_pick_coordinate():
     import threading
+    import tkinter as tk
     sid = request.args.get('sid', '')
 
     def run():
-        import tkinter as tk
         result = {}
-        done = threading.Event()
-
-        def on_picked(x, y, rgb):
-            result['x'] = x
-            result['y'] = y
-            result['rgb'] = list(rgb) if rgb else [0, 0, 0]
-            done.set()
-
-        root = tk.Tk()
-        root.withdraw()
+        root = None
         try:
-            _ctrl().start_coordinate_picker(on_picked=on_picked)
+            root = tk.Tk()
+            root.withdraw()
+
+            def on_picked(x, y, rgb):
+                result['x'] = x
+                result['y'] = y
+                result['rgb'] = list(rgb) if rgb else [0, 0, 0]
+                root.quit()
+
+            def on_cancelled():
+                root.quit()
+
+            cp = CoordinatePicker(on_picked, on_cancelled=on_cancelled)
+            cp.start(root=root)
             root.mainloop()
-        except Exception:
-            pass
-        done.wait(timeout=30)
-        if result and sid:
+        except Exception as e:
+            result['error'] = str(e)
+        finally:
+            if root:
+                try:
+                    root.destroy()
+                except Exception:
+                    pass
+
+        if result and 'x' in result and sid:
             _sio().emit('coordinate_picked', result, room=sid)
 
     threading.Thread(target=run, daemon=True).start()

@@ -146,11 +146,10 @@ class AppController:
     def list_windows(self) -> list[str]:
         return self.capture.list_windows()
 
-    def start_template_capture(self, on_saved=None):
+    def start_template_capture(self, on_saved=None, on_cancelled=None, root=None):
         from autovision.gui.template_capture import TemplateCapture
-        self._capture_on_saved = on_saved
-        tc = TemplateCapture(self, on_saved=on_saved)
-        tc.start_capture()
+        tc = TemplateCapture(self, on_saved=on_saved, on_cancelled=on_cancelled)
+        tc.start_capture(root=root)
 
     def start_coordinate_picker(self, on_picked=None):
         from autovision.gui.coordinate_picker import CoordinatePicker
