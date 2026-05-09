@@ -32,9 +32,13 @@ def create_app(app_controller):
 
 
 def _find_static_dir():
-    import os
-    this_dir = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(this_dir, 'static')
+    import os, sys
+    # PyInstaller bundles files to sys._MEIPASS
+    if getattr(sys, 'frozen', False):
+        base = sys._MEIPASS
+    else:
+        base = os.path.dirname(os.path.abspath(__file__))
+    return os.path.join(base, 'static')
 
 
 def _register_socket_events(socketio, app_controller):
