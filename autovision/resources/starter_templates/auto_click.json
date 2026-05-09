@@ -1,0 +1,45 @@
+{
+  "name": "Auto Click (Example)",
+  "enabled": true,
+  "hotkey": "",
+  "window_title": "",
+  "window_method": "partial",
+  "tick_ms": 500,
+  "root": {
+    "type": "trigger",
+    "subtype": "image_found",
+    "config": {
+      "template": "your_button.png",
+      "confidence": 0.85
+    },
+    "children": [
+      {
+        "type": "action",
+        "subtype": "click_center",
+        "config": {
+          "button": "left",
+          "offset_x": 0,
+          "offset_y": 0
+        }
+      },
+      {
+        "type": "loop",
+        "subtype": "while_visible",
+        "config": {
+          "template": "your_button.png",
+          "max_iterations": 0,
+          "delay_ms": 100
+        },
+        "children": [
+          {
+            "type": "action",
+            "subtype": "wait",
+            "config": {
+              "duration_ms": 500
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

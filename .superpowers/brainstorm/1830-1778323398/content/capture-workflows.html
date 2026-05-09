@@ -1,0 +1,97 @@
+<h2>Capture Workflows</h2>
+<p class="subtitle">Three capture modes all accessible from the toolbar</p>
+
+<div class="split">
+  <div class="mockup">
+    <div class="mockup-header">1. Window Selection (3 methods)</div>
+    <div class="mockup-body" style="background:#1a1a2e; padding:12px; border-radius:8px; font-size:10px;">
+      <div style="display:flex; gap:8px; margin-bottom:10px;">
+        <div style="flex:1; background:#111; padding:8px; border-radius:4px;">
+          <div style="color:#e94560; margin-bottom:4px;">📋 Dropdown</div>
+          <div style="color:#aaa; font-size:9px;">List of all open windows, auto-refreshed. Click to select. Filter box at top.</div>
+        </div>
+        <div style="flex:1; background:#111; padding:8px; border-radius:4px;">
+          <div style="color:#0f9; margin-bottom:4px;">🎯 Crosshair</div>
+          <div style="color:#aaa; font-size:9px;">Click and drag a transparent overlay to any window. Window title captured on release.</div>
+        </div>
+        <div style="flex:1; background:#111; padding:8px; border-radius:4px;">
+          <div style="color:#0cf; margin-bottom:4px;">⌨ Manual</div>
+          <div style="color:#aaa; font-size:9px;">Type a window title or process name. Partial match supported. Regex toggle.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="split" style="margin-top:16px;">
+  <div class="mockup">
+    <div class="mockup-header">2. Template Image Capture</div>
+    <div class="mockup-body" style="background:#1a1a2e; padding:12px; border-radius:8px; font-size:10px;">
+      <div style="display:flex; gap:12px;">
+        <div style="flex:1;">
+          <div style="color:#e9c; margin-bottom:8px;">📸 Screen Region Capture</div>
+          <div style="color:#aaa; font-size:9px; line-height:1.6;">
+            1. Click "Capture Template" button<br/>
+            2. Screen freezes with a semi-transparent overlay<br/>
+            3. Drag to select the region<br/>
+            4. Preview + name the template → saved to project/images/
+          </div>
+        </div>
+        <div style="width:1px; background:#333;"></div>
+        <div style="flex:1;">
+          <div style="color:#e9c; margin-bottom:8px;">📂 Import from File</div>
+          <div style="color:#aaa; font-size:9px; line-height:1.6;">
+            1. Click "Import" button<br/>
+            2. File dialog → select PNG/JPG/BMP<br/>
+            3. Preview + optional crop<br/>
+            4. Name → saved to project/images/
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mockup">
+    <div class="mockup-header">3. Coordinate Picker</div>
+    <div class="mockup-body" style="background:#1a1a2e; padding:12px; border-radius:8px; font-size:10px;">
+      <div style="color:#0f9; margin-bottom:8px;">🖱 Click-to-Pick Coordinates</div>
+      <div style="color:#aaa; font-size:9px; line-height:1.6;">
+        1. In an action property (e.g., "Click Coordinate"), there's a <span style="color:#e94560;">📍 Pick</span> button<br/>
+        2. Clicking it minimizes the tool window and shows a crosshair cursor<br/>
+        3. Press <span style="color:#fff;">Space</span> anywhere on screen — coordinates auto-filled<br/>
+        4. Or press <span style="color:#fff;">Esc</span> to cancel<br/>
+        5. Shows a small floating preview: <span style="color:#0cf;">X: 845, Y: 420 | RGB: 234,187,45</span>
+      </div>
+      <div style="margin-top:8px; padding:6px; background:#111; border-radius:4px; color:#888; font-size:8px; text-align:center;">
+        + Also works while a script is running — for quick coordinate calibration
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Template Management</h3>
+  <div style="background:#1a1a2e; padding:14px; border-radius:8px; font-size:10px;">
+    <div style="display:flex; gap:12px;">
+      <div style="flex:2; color:#aaa; line-height:1.6;">
+        <div style="color:#e9c; margin-bottom:6px;">Template Library Panel</div>
+        • Thumbnail grid of all project templates<br/>
+        • Shows: name, dimensions, file size, last used date<br/>
+        • Right-click: rename, delete, duplicate, test-match<br/>
+        • Drag a template directly into the script tree to create a trigger<br/>
+        • Test-match: runs template matching on current screen, shows confidence score heatmap
+      </div>
+      <div style="flex:1; background:#111; padding:8px; border-radius:4px; text-align:center;">
+        <div style="color:#555; font-size:9px; margin-bottom:4px;">TEMPLATE PREVIEW</div>
+        <div style="border:1px dashed #555; padding:30px; color:#555; font-size:8px; border-radius:4px;">
+          accept.png<br/>32×32 px<br/>1.2 KB<br/><br/>
+          [thumbnail]
+        </div>
+        <div style="margin-top:6px; display:flex; gap:4px; justify-content:center;">
+          <span style="background:#333; color:#aaa; padding:2px 6px; border-radius:2px; font-size:8px;">🖼 View</span>
+          <span style="background:#333; color:#aaa; padding:2px 6px; border-radius:2px; font-size:8px;">🧪 Test</span>
+          <span style="background:#333; color:#aaa; padding:2px 6px; border-radius:2px; font-size:8px;">🗑 Del</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

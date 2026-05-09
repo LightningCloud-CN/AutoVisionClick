@@ -1,0 +1,115 @@
+<h2>Runtime Controls & Execution Model</h2>
+<p class="subtitle">Script execution, hotkeys, and the live dashboard</p>
+
+<div class="split">
+  <div class="mockup">
+    <div class="mockup-header">Execution Model</div>
+    <div class="mockup-body" style="background:#1a1a2e; padding:12px; border-radius:8px; font-size:10px;">
+      <div style="display:flex; gap:12px;">
+        <div style="flex:1; background:#111; padding:8px; border-radius:4px;">
+          <div style="color:#0f9; margin-bottom:4px;">Parallel Scripts</div>
+          <div style="color:#aaa; font-size:9px; line-height:1.5;">
+            • Multiple scripts run simultaneously<br/>
+            • Each script gets its own match loop thread<br/>
+            • Shared resource lock for input actions<br/>
+            • Max concurrent: 8 (configurable)
+          </div>
+        </div>
+        <div style="flex:1; background:#111; padding:8px; border-radius:4px;">
+          <div style="color:#e94560; margin-bottom:4px;">Match Loop (per script)</div>
+          <div style="color:#aaa; font-size:9px; line-height:1.5;">
+            1. Capture target window region<br/>
+            2. Run all active triggers' template matching<br/>
+            3. Dispatch to matching trigger's action tree<br/>
+            4. Evaluate conditions → execute actions<br/>
+            5. Sleep for tick interval → repeat
+          </div>
+        </div>
+        <div style="flex:1; background:#111; padding:8px; border-radius:4px;">
+          <div style="color:#e9c; margin-bottom:4px;">Resource Limits</div>
+          <div style="color:#aaa; font-size:9px; line-height:1.5;">
+            • CPU: auto-throttle when &lt; 1 match/s<br/>
+            • Match cache: avoid re-scanning static areas<br/>
+            • Batch captures for multiple triggers on same window
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="split" style="margin-top:16px;">
+  <div class="mockup">
+    <div class="mockup-header">Global Hotkeys (user-configurable)</div>
+    <div class="mockup-body" style="background:#1a1a2e; padding:12px; border-radius:8px; font-size:10px;">
+      <table style="width:100%; color:#aaa;">
+        <tr style="color:#e9c;"><td style="padding:4px 8px;">Hotkey</td><td style="padding:4px 8px;">Action</td><td style="padding:4px 8px;">Default</td></tr>
+        <tr><td style="padding:4px 8px; color:#e94560;">Ctrl+Shift+F5</td><td style="padding:4px 8px;">Start all scripts</td><td style="padding:4px 8px;">✓</td></tr>
+        <tr><td style="padding:4px 8px; color:#e94560;">Ctrl+Shift+F6</td><td style="padding:4px 8px;">Stop all scripts</td><td style="padding:4px 8px;">✓</td></tr>
+        <tr><td style="padding:4px 8px; color:#0f9;">Ctrl+Shift+F7</td><td style="padding:4px 8px;">Pause / Resume</td><td style="padding:4px 8px;">✓</td></tr>
+        <tr><td style="padding:4px 8px; color:#0cf;">Ctrl+Shift+F8</td><td style="padding:4px 8px;">Emergency kill switch</td><td style="padding:4px 8px;">✓</td></tr>
+        <tr><td style="padding:4px 8px; color:#e9c;">User-defined</td><td style="padding:4px 8px;">Per-script start/stop</td><td style="padding:4px 8px;">—</td></tr>
+      </table>
+      <div style="margin-top:8px; color:#888; font-size:9px;">All hotkeys work even when the tool window is minimized. Emergency kill also stops mouse/keyboard hooks.</div>
+    </div>
+  </div>
+</div>
+
+<div class="split" style="margin-top:16px;">
+  <div class="mockup">
+    <div class="mockup-header">Live Dashboard (when running)</div>
+    <div class="mockup-body" style="background:#1a1a2e; padding:12px; border-radius:8px; font-size:10px;">
+      <div style="display:flex; gap:12px;">
+        <div style="flex:2;">
+          <div style="color:#e9c; margin-bottom:6px;">Script Status Panel</div>
+          <div style="background:#111; padding:8px; border-radius:4px; margin-bottom:6px;">
+            <div style="display:flex; justify-content:space-between; color:#0f9; margin-bottom:4px;">
+              <span>✅ Auto Accept</span>
+              <span style="font-size:9px;">Runtime: 2m34s</span>
+            </div>
+            <div style="color:#888; font-size:9px;">Matches: 47 | Last: 0.3s ago | Tick: 500ms | Thread: OK</div>
+          </div>
+          <div style="background:#111; padding:8px; border-radius:4px; margin-bottom:6px;">
+            <div style="display:flex; justify-content:space-between; color:#0f9; margin-bottom:4px;">
+              <span>✅ Heal Check</span>
+              <span style="font-size:9px;">Runtime: 2m34s</span>
+            </div>
+            <div style="color:#888; font-size:9px;">Matches: 3 | Last: 12s ago | Tick: 2s | Thread: OK</div>
+          </div>
+          <div style="background:#111; padding:8px; border-radius:4px;">
+            <div style="display:flex; justify-content:space-between; color:#e94560; margin-bottom:4px;">
+              <span>⏸ Auto Loot</span>
+              <span style="font-size:9px;">Paused</span>
+            </div>
+            <div style="color:#888; font-size:9px;">Matches: 128 | Last: — | Thread: suspended</div>
+          </div>
+        </div>
+        <div style="flex:1; background:#111; padding:8px; border-radius:4px;">
+          <div style="color:#e9c; margin-bottom:6px;">Performance</div>
+          <div style="color:#aaa; font-size:9px; line-height:1.6;">
+            CPU: <span style="color:#0f9;">▂▃▄▃▂ 12%</span><br/>
+            Match rate: <span style="color:#0cf;">3.2/s</span><br/>
+            FPS: <span style="color:#0f9;">10</span><br/>
+            Threads: <span style="color:#e9c;">2/8</span><br/>
+            Memory: <span style="color:#888;">68 MB</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mockup">
+    <div class="mockup-header">Event Log</div>
+    <div class="mockup-body" style="background:#1a1a2e; padding:12px; border-radius:8px; font-size:9px; font-family:monospace; color:#aaa; line-height:1.8; max-height:200px; overflow:hidden;">
+      <div>[12:34:05] <span style="color:#0f9;">✓</span> Match: accept.png at (845,420) conf=0.92</div>
+      <div>[12:34:05] <span style="color:#0cf;">🖱</span> Click center (845, 420) left</div>
+      <div>[12:34:06] <span style="color:#e9c;">⏱</span> Wait 500ms — done</div>
+      <div>[12:34:06] <span style="color:#0f9;">✓</span> Match: accept.png at (845,420) conf=0.94</div>
+      <div>[12:34:06] <span style="color:#0cf;">🖱</span> Click center (845, 420) left</div>
+      <div>[12:34:07] <span style="color:#e9c;">⏱</span> Wait 500ms — done</div>
+      <div>[12:34:07] <span style="color:#0f9;">✓</span> Match: accept.png at (845,420) conf=0.93</div>
+      <div>[12:34:07] <span style="color:#0cf;">🖱</span> Click center (845, 420) left</div>
+      <div>[12:34:08] <span style="color:#e94560;">⚠</span> Low confidence match: accept.png conf=0.72 &lt; threshold 0.85</div>
+      <div>[12:34:08] <span style="color:#888;">↻</span> Skipping — waiting for better match</div>
+    </div>
+  </div>
+</div>

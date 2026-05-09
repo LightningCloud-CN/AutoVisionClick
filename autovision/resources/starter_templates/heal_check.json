@@ -1,0 +1,32 @@
+{
+  "name": "Heal Check (Example)",
+  "enabled": true,
+  "hotkey": "",
+  "window_title": "",
+  "window_method": "partial",
+  "tick_ms": 2000,
+  "root": {
+    "type": "trigger",
+    "subtype": "image_found",
+    "config": {
+      "template": "low_hp.png",
+      "confidence": 0.8
+    },
+    "children": [
+      {
+        "type": "action",
+        "subtype": "press_key",
+        "config": {
+          "key": "f1"
+        }
+      },
+      {
+        "type": "action",
+        "subtype": "wait",
+        "config": {
+          "duration_ms": 1500
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,108 @@
+<h2>Project Structure & Error Handling</h2>
+<p class="subtitle">How projects are saved on disk and how the tool handles failure</p>
+
+<div class="split">
+  <div class="mockup">
+    <div class="mockup-header">Project Folder Layout</div>
+    <div class="mockup-body" style="background:#1a1a2e; padding:12px; border-radius:8px; font-size:10px; font-family:monospace;">
+      <div style="color:#888; line-height:1.8;">
+        <div style="color:#aaa;">my_project/</div>
+        <div style="margin-left:16px;">├── <span style="color:#e94560;">project.json</span> <span style="color:#666;">← main config</span></div>
+        <div style="margin-left:16px;">├── <span style="color:#0f9;">scripts/</span></div>
+        <div style="margin-left:32px; color:#888;">├── auto_accept.json</div>
+        <div style="margin-left:32px; color:#888;">├── heal_check.json</div>
+        <div style="margin-left:32px; color:#888;">└── boss_fight.json</div>
+        <div style="margin-left:16px;">├── <span style="color:#0cf;">images/</span></div>
+        <div style="margin-left:32px; color:#888;">├── accept.png</div>
+        <div style="margin-left:32px; color:#888;">├── low_hp.png</div>
+        <div style="margin-left:32px; color:#888;">└── boss_icon.png</div>
+        <div style="margin-left:16px;">└── <span style="color:#e9c;">logs/</span> <span style="color:#666;">← per-session logs</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="mockup">
+    <div class="mockup-header">Script JSON Structure</div>
+    <div class="mockup-body" style="background:#111; padding:12px; border-radius:8px; font-size:9px; font-family:monospace; color:#aaa; line-height:1.6;">
+{<br/>
+  <span style="color:#e94560;">"name"</span>: <span style="color:#0f9;">"Auto Accept"</span>,<br/>
+  <span style="color:#e94560;">"enabled"</span>: <span style="color:#e9c;">true</span>,<br/>
+  <span style="color:#e94560;">"hotkey"</span>: <span style="color:#0f9;">"ctrl+shift+1"</span>,<br/>
+  <span style="color:#e94560;">"window"</span>: { <span style="color:#e94560;">"title"</span>: <span style="color:#0f9;">"Game"</span>, <span style="color:#e94560;">"method"</span>: <span style="color:#0f9;">"partial"</span> },<br/>
+  <span style="color:#e94560;">"tick_ms"</span>: <span style="color:#e9c;">500</span>,<br/>
+  <span style="color:#e94560;">"root"</span>: {<br/>
+  &nbsp;&nbsp;<span style="color:#e94560;">"type"</span>: <span style="color:#0f9;">"trigger"</span>,<br/>
+  &nbsp;&nbsp;<span style="color:#e94560;">"subtype"</span>: <span style="color:#0f9;">"image_found"</span>,<br/>
+  &nbsp;&nbsp;<span style="color:#e94560;">"config"</span>: { <span style="color:#e94560;">"template"</span>: <span style="color:#0f9;">"accept.png"</span>, <span style="color:#e94560;">"confidence"</span>: <span style="color:#e9c;">0.85</span> },<br/>
+  &nbsp;&nbsp;<span style="color:#e94560;">"children"</span>: [...]<br/>
+  }<br/>
+}
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Error Handling Strategy</h3>
+  <div style="background:#1a1a2e; padding:14px; border-radius:8px; font-size:10px;">
+    <table style="width:100%; color:#aaa;">
+      <tr style="color:#e9c;">
+        <td style="padding:6px 8px;">Scenario</td>
+        <td style="padding:6px 8px;">Behavior</td>
+        <td style="padding:6px 8px;">User sees</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 8px; color:#e94560;">Window not found</td>
+        <td style="padding:6px 8px;">Script pauses, retries every 2s, auto-resumes when window reappears</td>
+        <td style="padding:6px 8px; color:#e9c;">⚠ "Window 'Game' not found — waiting..."</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 8px; color:#e94560;">Template match timeout</td>
+        <td style="padding:6px 8px;">No match for N seconds → trigger optional fallback action</td>
+        <td style="padding:6px 8px; color:#888;">⏱ "No match for accept.png in 30s"</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 8px; color:#e94560;">Click blocked / app foreground lost</td>
+        <td style="padding:6px 8px;">Queue action, retry on next tick if window is foreground again</td>
+        <td style="padding:6px 8px; color:#e9c;">⚠ "Input blocked — window not in foreground"</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 8px; color:#e94560;">Invalid script JSON</td>
+        <td style="padding:6px 8px;">Validation on load — refuse to run, highlight broken nodes in editor</td>
+        <td style="padding:6px 8px; color:#e94560;">✕ "Script 'X' has 2 errors — see editor"</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 8px; color:#e94560;">Emergency kill (Ctrl+Shift+F8)</td>
+        <td style="padding:6px 8px;">Immediately: stop all threads, release input hooks, save state</td>
+        <td style="padding:6px 8px; color:#e94560;">🛑 "EMERGENCY STOP — all scripts halted"</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 8px; color:#e94560;">Unhandled engine crash</td>
+        <td style="padding:6px 8px;">Per-script isolation — one script crash does not kill others</td>
+        <td style="padding:6px 8px; color:#e94560;">✕ "Script 'X' crashed — check log. Other scripts unaffected."</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Validation Rules (editor-side)</h3>
+  <div style="display:flex; gap:12px; color:#aaa; font-size:10px;">
+    <div style="flex:1; background:#1a1a2e; padding:12px; border-radius:8px;">
+      <span style="color:#e94560;">🔴 Errors (blocks run)</span>
+      <ul style="margin-top:6px; padding-left:16px; line-height:1.8;">
+        <li>Trigger with no template selected</li>
+        <li>Action with missing required field</li>
+        <li>Loop with no exit condition</li>
+        <li>Circular group references</li>
+      </ul>
+    </div>
+    <div style="flex:1; background:#1a1a2e; padding:12px; border-radius:8px;">
+      <span style="color:#e9c;">🟡 Warnings (script runs anyway)</span>
+      <ul style="margin-top:6px; padding-left:16px; line-height:1.8;">
+        <li>Confidence threshold &lt; 0.7</li>
+        <li>Wait &lt; 100ms (may flood input)</li>
+        <li>Forever loop with no delay</li>
+        <li>Unused templates in project</li>
+      </ul>
+    </div>
+  </div>
+</div>

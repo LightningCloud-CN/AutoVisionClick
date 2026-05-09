@@ -1,0 +1,91 @@
+<h2>Choose the Logic Editor approach</h2>
+<p class="subtitle">Which style of visual scripting fits your workflow best?</p>
+
+<div class="cards">
+  <div class="card" data-choice="node-editor" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background:#1a1a2e; color:#eee; padding:16px; border-radius:8px; font-family:monospace; font-size:11px; min-height:160px;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
+          <div style="background:#e94560; color:#fff; padding:4px 10px; border-radius:12px; font-size:9px;">TRIGGER</div>
+          <div style="color:#aaa;">Image Found: "accept.png"</div>
+        </div>
+        <div style="display:flex; gap:4px; align-items:center; margin-bottom:10px;">
+          <div style="width:2px;height:20px;background:#e94560;margin:0 auto;"></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
+          <div style="background:#0f3460; color:#fff; padding:4px 10px; border-radius:12px; font-size:9px;">ACTION</div>
+          <div style="color:#ccc;">Click center</div>
+        </div>
+        <div style="display:flex; gap:4px; align-items:center; margin-bottom:10px;">
+          <div style="width:2px;height:20px;background:#0f3460;margin:0 auto;"></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:12px; margin-left:30px;">
+          <div style="background:#16213e; color:#fff; padding:4px 10px; border-radius:12px; font-size:9px;">LOOP</div>
+          <div style="color:#ccc;">Until gone</div>
+        </div>
+        <div style="display:flex; gap:4px; align-items:center; margin-bottom:10px; margin-left:30px;">
+          <div style="width:2px;height:20px;background:#16213e;margin:0 auto;"></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:12px; margin-left:60px;">
+          <div style="background:#0f3460; color:#fff; padding:4px 10px; border-radius:12px; font-size:9px;">ACTION</div>
+          <div style="color:#ccc;">Wait 500ms</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Node-based Flow Editor</h3>
+      <p>Drag &amp; drop blocks (triggers, actions, conditions, loops) and connect them with wires. Zoomable canvas, inline preview. Like a simplified Unreal Blueprints.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="tree-editor" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background:#1a1a2e; color:#eee; padding:16px; border-radius:8px; font-family:monospace; font-size:11px; min-height:160px;">
+        <div style="color:#e94560;">▶ Script "Auto Accept"</div>
+        <div style="margin-left:16px; color:#0f9; font-size:10px;">├─ 🔍 Trigger: Find "accept.png"</div>
+        <div style="margin-left:32px; color:#0cf; font-size:10px;">├─ 🖱 Action: Click center</div>
+        <div style="margin-left:32px; color:#e9c; font-size:10px;">├─ 🔄 Loop: While visible</div>
+        <div style="margin-left:48px; color:#0cf; font-size:10px;">│  └─ 🖱 Action: Wait 500ms</div>
+        <div style="margin-left:32px; color:#aaa; font-size:10px;">└─ ⏱ Action: Wait 2s</div>
+        <div style="margin-top:8px; color:#e94560;">▶ Script "Heal Check"</div>
+        <div style="margin-left:16px; color:#0f9; font-size:10px;">├─ 🔍 Trigger: Find "low_hp.png"</div>
+        <div style="margin-left:32px; color:#0cf; font-size:10px;">└─ ⌨ Action: Press "F1"</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Tree/List Structured Editor</h3>
+      <p>Scripts are collapsible tree lists with icons. Side panel for editing properties of the selected node. Clean hierarchy, easy to scan, no wires to tangle.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="hybrid" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background:#1a1a2e; color:#eee; padding:16px; border-radius:8px; font-family:monospace; font-size:11px; min-height:160px; display:flex; gap:12px;">
+        <div style="flex:1; color:#aaa; font-size:10px;">
+          <div style="color:#e94560; margin-bottom:6px;">📋 SCRIPT LIST</div>
+          <div style="background:#e94560; color:#fff; padding:2px 8px; border-radius:4px; margin-bottom:4px;">⚠ Auto Accept</div>
+          <div style="padding:2px 8px; margin-bottom:4px;">Heal Check</div>
+          <div style="padding:2px 8px; margin-bottom:4px;">Auto Loot</div>
+          <div style="padding:2px 8px;">Boss Fight</div>
+        </div>
+        <div style="width:2px; background:#333;"></div>
+        <div style="flex:2;">
+          <div style="color:#e94560; margin-bottom:4px; font-size:9px;">FLOW PREVIEW</div>
+          <div style="display:flex; align-items:center; gap:4px; font-size:9px;">
+            <div style="background:#e94560; color:#fff; padding:2px 6px; border-radius:8px;">IMG</div>
+            <span style="color:#555;">→</span>
+            <div style="background:#0f3460; color:#fff; padding:2px 6px; border-radius:8px;">CLICK</div>
+            <span style="color:#555;">→</span>
+            <div style="background:#16213e; color:#fff; padding:2px 6px; border-radius:8px;">LOOP</div>
+          </div>
+          <div style="margin-top:12px; color:#aaa; font-size:9px;">PROPERTIES</div>
+          <div style="font-size:9px; color:#888; margin-top:4px;">Template: accept.png<br/>Confidence: 0.85<br/>Click type: left</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Hybrid: List + Flow Preview</h3>
+      <p>Left panel shows a tree list of scripts and modules. Right panel shows a mini flowchart preview of the selected node, plus properties. Best of both worlds.</p>
+    </div>
+  </div>
+</div>

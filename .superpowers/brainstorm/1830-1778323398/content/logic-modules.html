@@ -1,0 +1,161 @@
+<h2>Logic Module System</h2>
+<p class="subtitle">Every script is built from these 5 module types — drag, configure, done</p>
+
+<div class="section">
+  <h3>Module Palette</h3>
+  <div style="display:flex; gap:12px; flex-wrap:wrap;">
+    <div style="flex:1; min-width:110px; background:#1a1a2e; padding:14px; border-radius:8px; border-top:3px solid #e94560;">
+      <div style="color:#e94560; font-weight:bold; margin-bottom:6px;">🔍 Trigger</div>
+      <div style="color:#aaa; font-size:10px; line-height:1.6;">
+        • Image Found<br/>
+        • Image Lost<br/>
+        • Script Start<br/>
+        • Hotkey Press<br/>
+        • Timer (every N ms)<br/>
+        • Variable Change
+      </div>
+    </div>
+    <div style="flex:1; min-width:110px; background:#1a1a2e; padding:14px; border-radius:8px; border-top:3px solid #0f3460;">
+      <div style="color:#0f9; font-weight:bold; margin-bottom:6px;">🖱 Action</div>
+      <div style="color:#aaa; font-size:10px; line-height:1.6;">
+        • Click (center of match)<br/>
+        • Click (coordinate)<br/>
+        • Press Key<br/>
+        • Type Text<br/>
+        • Wait (ms)<br/>
+        • Set Variable<br/>
+        • Scroll<br/>
+        • Drag
+      </div>
+    </div>
+    <div style="flex:1; min-width:110px; background:#1a1a2e; padding:14px; border-radius:8px; border-top:3px solid #e9c;">
+      <div style="color:#e9c; font-weight:bold; margin-bottom:6px;">🔀 Condition</div>
+      <div style="color:#aaa; font-size:10px; line-height:1.6;">
+        • If Image Visible<br/>
+        • If Variable<br/>
+        • If Time Elapsed<br/>
+        • If Pixel Color<br/>
+        • Random Chance
+      </div>
+    </div>
+    <div style="flex:1; min-width:110px; background:#1a1a2e; padding:14px; border-radius:8px; border-top:3px solid #0cf;">
+      <div style="color:#0cf; font-weight:bold; margin-bottom:6px;">🔄 Loop</div>
+      <div style="color:#aaa; font-size:10px; line-height:1.6;">
+        • While Visible<br/>
+        • Repeat N times<br/>
+        • Until Condition<br/>
+        • For Each Match<br/>
+        • Forever
+      </div>
+    </div>
+    <div style="flex:1; min-width:110px; background:#1a1a2e; padding:14px; border-radius:8px; border-top:3px solid #888;">
+      <div style="color:#aaa; font-weight:bold; margin-bottom:6px;">📦 Group</div>
+      <div style="color:#aaa; font-size:10px; line-height:1.6;">
+        • Named Subroutine<br/>
+        • Reusable Block<br/>
+        • Import from library<br/>
+        • Collapse/Expand
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="split" style="margin-top:16px;">
+  <div class="mockup">
+    <div class="mockup-header">Building a Script: Drag & Drop Flow</div>
+    <div class="mockup-body" style="background:#1a1a2e; padding:8px; border-radius:8px; font-size:10px;">
+      <div style="color:#aaa; margin-bottom:8px;">Select from palette → Drag into tree → Set properties</div>
+
+      <div style="display:flex; gap:12px;">
+        <div style="width:130px; background:#111; padding:6px; border-radius:4px; font-size:9px;">
+          <div style="color:#e9c; margin-bottom:6px;">PALETTE</div>
+          <div style="color:#e94560; padding:2px 4px; background:rgba(233,69,96,0.1); border-radius:2px; margin-bottom:2px;">🔍 Image Found</div>
+          <div style="color:#e94560; padding:2px 4px; margin-bottom:2px;">🔍 Hotkey</div>
+          <div style="color:#e94560; padding:2px 4px; margin-bottom:2px;">🔍 Timer</div>
+          <div style="color:#0f9; padding:2px 4px; background:rgba(0,255,153,0.1); border-radius:2px; margin-bottom:2px;">🖱 Click Center</div>
+          <div style="color:#0f9; padding:2px 4px; margin-bottom:2px;">🖱 Press Key</div>
+          <div style="color:#0f9; padding:2px 4px; margin-bottom:2px;">🖱 Wait</div>
+          <div style="color:#e9c; padding:2px 4px; margin-bottom:2px;">🔀 If Visible</div>
+          <div style="color:#0cf; padding:2px 4px; background:rgba(0,204,255,0.1); border-radius:2px; margin-bottom:2px;">🔄 While Visible</div>
+          <div style="color:#0cf; padding:2px 4px; margin-bottom:2px;">🔄 Repeat N</div>
+        </div>
+
+        <div style="flex:1;">
+          <div style="background:#0f3460; padding:8px; border-radius:4px; margin-bottom:4px; border-left:3px solid #e94560;">
+            <div style="display:flex; justify-content:space-between;">
+              <span style="color:#e94560;">🔍 Trigger: Image Found</span>
+              <span style="color:#555;">✕ ↑↓</span>
+            </div>
+            <div style="margin-left:12px; color:#aaa; font-size:9px;">Template: <span style="color:#fff;">accept.png</span> | Conf: <span style="color:#fff;">0.85</span> | Region: <span style="color:#fff;">full window</span></div>
+          </div>
+          <div style="padding-left:12px; border-left:2px solid #333;">
+            <div style="background:#0f3460; padding:8px; border-radius:4px; margin-bottom:4px; border-left:3px solid #0f9;">
+              <div style="display:flex; justify-content:space-between;">
+                <span style="color:#0f9;">🖱 Action: Click Center</span>
+                <span style="color:#555;">✕ ↑↓</span>
+              </div>
+              <div style="margin-left:12px; color:#aaa; font-size:9px;">Button: <span style="color:#fff;">left</span> | Offset: <span style="color:#fff;">0,0</span></div>
+            </div>
+            <div style="padding-left:12px; border-left:2px solid #333;">
+              <div style="background:#0f3460; padding:8px; border-radius:4px; margin-bottom:4px; border-left:3px solid #0cf;">
+                <div style="display:flex; justify-content:space-between;">
+                  <span style="color:#0cf;">🔄 Loop: While Visible</span>
+                  <span style="color:#555;">✕ ↑↓</span>
+                </div>
+                <div style="margin-left:12px; color:#aaa; font-size:9px;">Max iterations: <span style="color:#fff;">0 (∞)</span> | Tick: <span style="color:#fff;">500ms</span></div>
+              </div>
+              <div style="padding-left:12px; border-left:2px solid #333;">
+                <div style="background:#0f3460; padding:8px; border-radius:4px; margin-bottom:4px; border-left:3px solid #0f9;">
+                  <div style="display:flex; justify-content:space-between;">
+                    <span style="color:#0f9;">🖱 Action: Wait</span>
+                    <span style="color:#555;">✕ ↑↓</span>
+                  </div>
+                  <div style="margin-left:12px; color:#aaa; font-size:9px;">Duration: <span style="color:#fff;">500ms</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="width:150px;">
+          <div style="background:#111; padding:6px; border-radius:4px; margin-bottom:8px;">
+            <div style="color:#e9c; margin-bottom:6px; font-size:9px;">MINI FLOW</div>
+            <div style="text-align:center; font-size:8px;">
+              <div style="background:#e94560; color:#fff; padding:3px; border-radius:8px;">🔍 IMG</div>
+              <div style="color:#555;">↓</div>
+              <div style="background:#0f9; color:#111; padding:3px; border-radius:8px;">🖱 CLK</div>
+              <div style="color:#555;">↓</div>
+              <div style="background:#0cf; color:#111; padding:3px; border-radius:8px;">🔄 LOOP</div>
+              <div style="color:#555;">↓</div>
+              <div style="background:#0f9; color:#111; padding:3px; border-radius:8px;">⏱ WAIT</div>
+            </div>
+          </div>
+          <div style="background:#111; padding:6px; border-radius:4px; font-size:9px;">
+            <div style="color:#e9c; margin-bottom:6px;">VARIABLES</div>
+            <div style="color:#aaa;">$match_x = 845</div>
+            <div style="color:#aaa;">$match_y = 420</div>
+            <div style="color:#aaa;">$loop_count = 3</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>How Beginners Learn It</h3>
+  <div style="display:flex; gap:12px;">
+    <div style="flex:1; background:#1a1a2e; padding:14px; border-radius:8px;">
+      <div style="color:#0f9; font-weight:bold; margin-bottom:6px;">1. Template Gallery</div>
+      <p style="font-size:10px; color:#aaa;">Built-in starter templates (Auto Click, Heal Check, etc.) that new users can load and inspect. Each template has explanatory comments.</p>
+    </div>
+    <div style="flex:1; background:#1a1a2e; padding:14px; border-radius:8px;">
+      <div style="color:#0cf; font-weight:bold; margin-bottom:6px;">2. Wizard Mode</div>
+      <p style="font-size:10px; color:#aaa;">Answer 3 questions ("Which image?", "What to do?", "How often?") and the wizard generates the script. Can be edited later.</p>
+    </div>
+    <div style="flex:1; background:#1a1a2e; padding:14px; border-radius:8px;">
+      <div style="color:#e9c; font-weight:bold; margin-bottom:6px;">3. Tooltips & Validation</div>
+      <p style="font-size:10px; color:#aaa;">Every module has a hover tooltip. Red highlights show incomplete modules. Yellow warnings for common mistakes.</p>
+    </div>
+  </div>
+</div>
