@@ -2,19 +2,16 @@
 import os
 import cv2
 import numpy as np
-import customtkinter as ctk
 import tkinter as tk
-from autovision.gui.styles import (
-    styled_label, styled_button, BG_PANEL, FONT_FAMILY,
-    TEXT_SECONDARY, ACCENT_GREEN,
-)
+from tkinter import messagebox
 
 
 class TemplateCapture:
-    def __init__(self, app_controller):
+    def __init__(self, app_controller, on_saved=None):
         self._app = app_controller
         self._start = None
         self._rect = None
+        self._on_saved = on_saved
 
     def start_capture(self):
         self._overlay = tk.Toplevel()
@@ -64,34 +61,20 @@ class TemplateCapture:
         self._save_template(img, left, top, right, bottom)
 
     def _save_template(self, img: np.ndarray, left, top, right, bottom):
-        dialog = ctk.CTkToplevel()
-        dialog.title("保存模板")
-        dialog.geometry("350x250")
-        dialog.configure(fg_color=BG_PANEL)
+        w = right - left
+        h = bottom - top
+        name = tk.simpledialog.askstring("保存模板", f"区域大小: {w}x{h}\n输入模板名称:")
+        if not name:
+            return
 
-        styled_label(dialog, "保存模板", size=11, color=TEXT_SECONDARY).pack(pady=(10, 4))
-        styled_label(dialog, f"区域大小: {right-left}x{bottom-top}",
-                     size=9, color=TEXT_SECONDARY).pack()
+        if not self._app.project_dir:
+            messagebox.showwarning("提示", "请先创建或打开一个项目。")
+            return
 
-        entry = ctk.CTkEntry(dialog, placeholder_text="输入模板名称...",
-                             font=(FONT_FAMILY, 11), height=30)
-        entry.pack(fill="x", padx=20, pady=(10, 4))
-        entry.focus()
+        img_dir = os.path.join(self._app.project_dir, "images")
+        os.makedirs(img_dir, exist_ok=True)
+        path = os.path.join(img_dir, f"{name}.png")
+        cv2.imwrite(path, img)
 
-        def save():
-            name = entry.get().strip()
-            if not name:
-                return
-            if not self._app.project_dir:
-                from tkinter import messagebox
-                messagebox.showwarning("提示", "请先创建或打开一个项目。")
-                dialog.destroy()
-                return
-            img_dir = os.path.join(self._app.project_dir, "images")
-            os.makedirs(img_dir, exist_ok=True)
-            path = os.path.join(img_dir, f"{name}.png")
-            cv2.imwrite(path, img)
-            dialog.destroy()
-
-        styled_button(dialog, "保存", color=ACCENT_GREEN, command=save).pack(pady=(8, 4))
-        dialog.bind("<Return>", lambda e: save())
+        if self._on_saved:
+            self._on_saved(name, w, h, path)

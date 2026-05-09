@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoVision - 自动化视觉识别工具</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+</head>
+<body>
+
+<!-- ===== TOOLBAR ===== -->
+<nav id="toolbar">
+  <span class="toolbar-brand">AutoVision</span>
+  <div class="toolbar-group">
+    <button id="btn-run" class="btn btn-green" title="全部启动">▶ 运行</button>
+    <button id="btn-stop" class="btn btn-red" title="全部停止">⏹ 停止</button>
+    <button id="btn-pause" class="btn btn-yellow" title="暂停/恢复">⏸ 暂停</button>
+    <button id="btn-emergency" class="btn btn-red-outline" title="紧急停止">⚠ 紧急</button>
+  </div>
+  <div class="toolbar-sep"></div>
+  <div class="toolbar-group">
+    <button id="btn-capture" class="btn btn-ghost" title="截取屏幕区域作为模板">📸 截图</button>
+    <button id="btn-coord" class="btn btn-ghost" title="在屏幕上拾取坐标">📍 取坐标</button>
+    <button id="btn-wizard" class="btn btn-blue" title="快速向导">🧙 向导</button>
+  </div>
+  <span class="toolbar-spacer"></span>
+  <div class="toolbar-group">
+    <button id="btn-project-open" class="btn btn-ghost">📁 打开项目</button>
+    <button id="btn-project-save" class="btn btn-ghost">💾 保存</button>
+  </div>
+  <span id="toolbar-status" class="toolbar-status idle">● 空闲</span>
+</nav>
+
+<!-- ===== MAIN GRID ===== -->
+<div id="main-grid">
+
+  <!-- LEFT SIDEBAR -->
+  <aside id="left-sidebar">
+
+    <!-- Script List -->
+    <section class="panel">
+      <div class="panel-header">
+        <span>脚本列表</span>
+        <button id="btn-new-script" class="mini-btn" title="新建脚本">+</button>
+      </div>
+      <div id="script-list" class="panel-body">
+        <div class="empty-hint">暂无脚本，点击 + 创建</div>
+      </div>
+    </section>
+
+    <!-- Module Palette -->
+    <section class="panel">
+      <div class="panel-header">模块面板</div>
+      <div id="module-palette" class="panel-body">
+        <!-- populated by JS -->
+      </div>
+    </section>
+
+    <!-- Template List -->
+    <section class="panel">
+      <div class="panel-header">
+        <span>模板库</span>
+        <button id="btn-upload-template" class="mini-btn" title="导入模板">+</button>
+      </div>
+      <div id="template-list" class="panel-body">
+        <div class="empty-hint">暂无模板</div>
+      </div>
+    </section>
+  </aside>
+
+  <!-- CENTER: Script Editor -->
+  <main id="center-panel" class="panel">
+    <div class="panel-header">
+      <span id="current-script-name">选择一个脚本</span>
+      <div class="script-meta" id="script-meta" style="display:none">
+        <label><input type="checkbox" id="script-enabled" checked> 启用</label>
+        <label>间隔(ms) <input type="number" id="script-tick" value="500" min="50" step="50" style="width:70px"></label>
+        <label>窗口 <input type="text" id="script-window" placeholder="窗口标题" style="width:120px"></label>
+        <button id="btn-select-window" class="mini-btn" title="选择窗口">🔍</button>
+        <button id="btn-script-delete" class="mini-btn danger" title="删除脚本">🗑</button>
+      </div>
+    </div>
+    <div id="tree-editor" class="panel-body">
+      <div class="empty-hint">选择一个脚本以编辑，或在模块面板中点击模块添加节点</div>
+    </div>
+  </main>
+
+  <!-- RIGHT SIDEBAR -->
+  <aside id="right-sidebar">
+
+    <!-- Properties -->
+    <section class="panel">
+      <div class="panel-header">属性面板</div>
+      <div id="properties-content" class="panel-body">
+        <div class="empty-hint">选择一个模块<br>编辑其属性</div>
+      </div>
+    </section>
+
+    <!-- Mini Flow -->
+    <section class="panel">
+      <div class="panel-header">流程预览</div>
+      <div id="mini-flow-content" class="panel-body">
+        <div class="empty-hint">未选择模块</div>
+      </div>
+    </section>
+  </aside>
+</div>
+
+<!-- ===== BOTTOM: Event Log ===== -->
+<section id="bottom-panel" class="panel collapsed">
+  <div class="panel-header" id="log-header">
+    <span>事件日志</span>
+    <div>
+      <span id="log-count" class="log-badge">0</span>
+      <button id="btn-clear-log" class="mini-btn">清空</button>
+      <button id="btn-toggle-log" class="mini-btn">▲</button>
+    </div>
+  </div>
+  <div id="log-entries" class="panel-body"></div>
+</section>
+
+<!-- ===== DASHBOARD OVERLAY ===== -->
+<div id="dashboard-overlay" class="overlay hidden">
+  <div id="dashboard-panel" class="slide-panel">
+    <div class="panel-header">
+      <span>📊 运行面板</span>
+      <button id="btn-close-dashboard" class="mini-btn">✕</button>
+    </div>
+    <div class="panel-header" style="font-size:11px; color:var(--text-secondary); border:none;">
+      <span id="dashboard-summary"></span>
+    </div>
+    <div id="dashboard-cards" class="panel-body">
+      <div class="empty-hint">没有脚本在运行</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODALS ===== -->
+<div id="modal-overlay" class="overlay hidden">
+  <div id="modal-box" class="modal-box glass">
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- ===== TOAST ===== -->
+<div id="toast-container"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
