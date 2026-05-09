@@ -37,21 +37,40 @@ AutoVisionClick is a desktop automation tool that watches your screen for specif
 - Global hotkey control (Ctrl+Shift+F5~F8)
 - Project-based folder storage (JSON + images)
 
-### Quick Start
+### Installation
+
+#### Method 1: Download Packaged Release (Recommended)
+
+No Python required. Just download and run.
+
+1. Go to [Releases](https://github.com/LightningCloud-CN/AutoVisionClick/releases)
+2. Download the latest `AutoVisionClick-vX.X.X.zip`
+3. Extract to any folder
+4. Double-click `AutoVisionClick.exe`
+
+The browser opens automatically at `http://127.0.0.1:5000`.
+
+#### Method 2: Run from Source (Developers)
+
+Requires Python 3.10+.
 
 ```bash
-# Clone
 git clone https://github.com/LightningCloud-CN/AutoVisionClick.git
 cd AutoVisionClick
-
-# Install dependencies
 pip install -r requirements.txt
-
-# Run
 python -m autovision.main
 ```
 
-The browser will open automatically at `http://127.0.0.1:5000`.
+#### Method 3: Build from Source
+
+```bash
+git clone https://github.com/LightningCloud-CN/AutoVisionClick.git
+cd AutoVisionClick
+pip install -r requirements.txt
+pip install pyinstaller
+pyinstaller AutoVisionClick.spec
+# Output: dist/AutoVisionClick.exe
+```
 
 ### How It Works
 
@@ -154,21 +173,40 @@ AutoVisionClick 是一款桌面自动化工具。它实时监控屏幕上是否�
 - 全局热键控制 (Ctrl+Shift+F5~F8)
 - 基于项目文件夹的存储 (JSON + 图片)
 
-### 快速开始
+### 安装方式
+
+#### 方式一：下载打包版（推荐）
+
+无需安装 Python，下载即用。
+
+1. 前往 [Releases](https://github.com/LightningCloud-CN/AutoVisionClick/releases) 页面
+2. 下载最新版 `AutoVisionClick-vX.X.X.zip`
+3. 解压到任意目录
+4. 双击 `AutoVisionClick.exe`
+
+浏览器自动打开 `http://127.0.0.1:5000`。
+
+#### 方式二：源码运行（开发者）
+
+需要 Python 3.10+。
 
 ```bash
-# 克隆仓库
 git clone https://github.com/LightningCloud-CN/AutoVisionClick.git
 cd AutoVisionClick
-
-# 安装依赖
 pip install -r requirements.txt
-
-# 运行
 python -m autovision.main
 ```
 
-浏览器将自动打开 `http://127.0.0.1:5000`。
+#### 方式三：自行打包
+
+```bash
+git clone https://github.com/LightningCloud-CN/AutoVisionClick.git
+cd AutoVisionClick
+pip install -r requirements.txt
+pip install pyinstaller
+pyinstaller AutoVisionClick.spec
+# 输出文件: dist/AutoVisionClick.exe
+```
 
 ### 工作原理
 
